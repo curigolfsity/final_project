@@ -611,8 +611,16 @@ video {
   margin-top: 2rem;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
+}
+
+.hidden {
+  display: none;
 }
 
 .min-h-screen {
@@ -667,6 +675,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .p-4 {
@@ -778,6 +791,10 @@ video {
     display: flex;
   }
 
+  .sm\:hidden {
+    display: none;
+  }
+
   .sm\:items-center {
     align-items: center;
   }
@@ -798,4 +815,23 @@ video {
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
+}
+
+#getWeatherbtn {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
