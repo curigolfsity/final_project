@@ -22,27 +22,19 @@ document.getElementById('weatherForm').addEventListener('submit', function (even
 function displayWeather(data) {
     // Display the weather information
     var resultElement = document.getElementById('weatherResult');
-    resultElement.innerHTML = `<h1 class="text-2xl font-bold mb-4">Weather Forecast for ${data.location.name}, ${data.location.country}</h1>`;
-
+    resultElement.innerHTML = `<h2>Weather Forecast for ${data.location.name}, ${data.location.country}</h2>`;
     // Display forecast for each day
     data.forecast.forecastday.forEach(day => {
-        const dayBox = document.createElement('div');
-        dayBox.classList.add('bg-gray-200', 'p-4', 'rounded-xl', 'mb-4');
-
-        dayBox.innerHTML = `
-        <div class="relative">
-        <img class="absolute top-0 right-0" src="${day.day.condition.icon}" alt="${day.day.condition.text} icon">
-            <h3 class="text-lg font-semibold">${formatDate(day.date)}</h3>
-            <p><strong>Condition:</strong> ${day.day.condition.text}</p>
-            <p><strong>Temperature:</strong> ${day.day.avgtemp_c}°C</p>
-            <p><strong>PM 2.5:</strong> ${Math.round(day.day.air_quality.pm2_5 * 100) / 100}</p>
-            <p><strong>Average Humidity:</strong> ${day.day.avghumidity}</p>
-            </div>
+        resultElement.innerHTML += `
+            <h3>${day.date}</h3>
+            <p>Condition: ${day.day.condition.text}</p>
+            <p>Temperature: ${day.day.avgtemp_c}°C</p>
+            <p>PM 2.5: ${Math.round(day.day.air_quality.pm2_5*100)/100}</p>
+            <hr>
         `;
-
-        resultElement.appendChild(dayBox);
     });
 }
+
 function visualizeData(data) {
     // Visualize data with D3.js
     const chartdata = data.forecast.forecastday.map(day => ({ x: formatDate(day.date), y: day.day.avgtemp_c }));
@@ -132,79 +124,42 @@ function visualizeData(data) {
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
-    const weatherInfo = d3.select('#weatherInfo');
-
-    svg.selectAll('.dot')
-        .data(chartdata)
-        .enter().append('circle')
-        .attr('class', 'dot')
-        .attr('cx', d => xScale(d.x) + xScale.bandwidth() / 2)
-        .attr('cy', d => yScale(d.y))
-        .attr('r', 5)
-        .on('mouseover', handleMouseOver)
-        .on('mouseout', handleMouseOut);
-
-
-    function handleMouseOver(event, d) {
-        d3.select(this).attr('r', 8);
-    
-        tooltip.transition().duration(200).style('opacity', 0.9);
-    
-        const chartContainerRect = chartContainer.node().getBoundingClientRect();
-    
-        // Calculate the x and y positions for the tooltip
-        const xPosition = xScale(d.x) + xScale.bandwidth() / 2 + chartContainerRect.left;
-        const yPosition = yScale(d.y) + chartContainerRect.top;
-    
-        // Center-align the tooltip horizontally
-        const tooltipWidth = parseFloat(tooltip.style('width'));
-        const xOffset = tooltipWidth / 2;
-    
-        tooltip.style('left', xPosition - xOffset + 'px');
-    
-        // Check if the tooltip goes beyond the top of the chart
-        if (yPosition - tooltip.node().offsetHeight < chartContainerRect.top) {
-            tooltip.style('top', yPosition + 'px'); // Display below the point
-        } else {
-            tooltip.style('top', yPosition - tooltip.node().offsetHeight - 10 + 'px'); // Display above the point
+        function handleMouseOver(event, d) {
+            d3.select(this).attr('r', 8);
+        
+            tooltip.transition().duration(200).style('opacity', 0.9);
+        
+            const chartContainerRect = chartContainer.node().getBoundingClientRect();
+        
+            // Calculate the x and y positions for the tooltip
+            const xPosition = xScale(d.x) + xScale.bandwidth() / 2 + chartContainerRect.left;
+            const yPosition = yScale(d.y) + chartContainerRect.top;
+        
+            // Center-align the tooltip horizontally
+            const tooltipWidth = parseFloat(tooltip.style('width'));
+            const xOffset = tooltipWidth / 2;
+        
+            tooltip.style('left', xPosition - xOffset + 'px');
+        
+            // Check if the tooltip goes beyond the top of the chart
+            if (yPosition - tooltip.node().offsetHeight < chartContainerRect.top) {
+                tooltip.style('top', yPosition + 'px'); // Display below the point
+            } else {
+                tooltip.style('top', yPosition - tooltip.node().offsetHeight - 10 + 'px'); // Display above the point
+            }
+        
+            tooltip.html(`${d.x}<br/>Temperature: ${d.y}°C`);
         }
-    
-        // Display weather information underneath the graph
-        const dayIndex = chartdata.findIndex(item => item.x === d.x);
-        const dayWeather = data.forecast.forecastday[dayIndex].day;
-    
-        weatherInfo.html(`
-            <h3 class="text-xl">${formatDate(d.x)}</h3>
-            <p><strong>Condition:</strong> ${dayWeather.condition.text}</p>
-            <p><strong>Temperature:</strong> ${dayWeather.avgtemp_c}°C</p>
-            <p><strong>PM 2.5:</strong> ${Math.round(dayWeather.air_quality.pm2_5 * 100) / 100}</p>
-        `);
+        
+        
+        
+        
 
-        weatherInfo.style('opacity', 1);  // Show weatherInfo on mouse over
-    }
-    
-    
-    function handleMouseOut() {
-        d3.select(this).attr('r', 5);
-    
-        // Hide the tooltip
-        tooltip.transition().duration(500).style('opacity', 0);
-    
-        // Hide weatherInfo on mouse out
-        weatherInfo.style('opacity', 0);
-    
-    }
-    
+    function handleMouseOut(d) {
+        d3.select(this)
+            .attr('r', 5);
 
-    function handleMouseOutDelayed() {
-    tooltip.transition().duration(500).style('opacity', 0);
-
-    // Hide weatherInfo on mouse out
-    weatherInfo.style('opacity', 0);
-}
-
-
-    tooltip.transition()
+        tooltip.transition()
             .duration(500)
             .style('opacity', 0);
     }
@@ -218,38 +173,22 @@ function visualizeData(data) {
 
     function handleZoom(event) {
         const new_xScale = event.transform.rescaleX(xScale);
-    
+
         svg.select('.line')
             .attr('d', line.x(d => new_xScale(d.x) + new_xScale.bandwidth() / 2));
-    
+
         svg.selectAll('.dot')
             .attr('cx', d => new_xScale(d.x) + new_xScale.bandwidth() / 2);
-    
+
         svg.select('.x-axis')
             .call(d3.axisBottom(new_xScale));
-    
+
         svg.select('.y-axis')
             .call(d3.axisLeft(yScale));
-    
-        // Update the position of the weather information
-        const chartContainerRect = chartContainer.node().getBoundingClientRect();
-        const currentXPosition = parseFloat(weatherInfo.style('left'));
-        const newXPosition = new_xScale(chartdata[0].x) + new_xScale.bandwidth() / 2 + chartContainerRect.left - weatherInfo.node().offsetWidth / 2;
-    
-        weatherInfo.style('left', newXPosition + 'px');
-        
-        // Check if the tooltip goes beyond the top of the chart
-        const yPosition = yScale(chartdata[0].y) + chartContainerRect.top;
-        if (yPosition - tooltip.node().offsetHeight < chartContainerRect.top) {
-            tooltip.style('top', yPosition + 'px'); // Display below the point
-        } else {
-            tooltip.style('top', yPosition - tooltip.node().offsetHeight - 10 + 'px'); // Display above the point
-        }
     }
-    
-    
-    
-    
+
+}
+
 
 
 

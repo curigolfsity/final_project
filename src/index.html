@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/dist/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Weather Forecast</title>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-8 flex flex-col items-center justify-center min-h-screen">
-        <div class="py-8 px-8 bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
-            <h1 class="text-3xl font-bold underline text-center">Weather Forecast</h1>
-        
-            <form id="weatherForm" class="flex flex-col items-center">
-                <label for="location" class="mb-2">Enter Location:</label>
-                <input type="text" id="location" placeholder="e.g., Bangkok" required class=" px-2 py-1 mb-2 rounded-full focus:ring-2 focus:ring-blue-500">
-                <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded-full">Get Weather</button>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="py-4 px-4 bg-white rounded-4 shadow-lg rounded">
+            <h1 class="display-4 text-center font-weight-bold">Weather Forecast</h1>
+            
+            <form id="weatherForm" class="d-flex flex-column align-items-center mt-4 rounded p-4 ">
+                <label for="location" class="form-label mb-2">Enter Location:</label>
+                <input type="text" id="location" placeholder="e.g., Bangkok" required class="form-control mb-2 rounded-3">
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded-4">Get Weather</button>
             </form>
         </div>
+        
 
-        <div class="chart-container mt-8">
+        <div class="chart-container mt-5">
             <svg id="line-chart" width="300" height="150"></svg>
         </div>
-        
-        <div id="weatherInfo" class="text-center mt-4 mb-2 font-semibold"></div>
-        <div id="weatherResult" class="mt-4"></div>
 
-
+        <div id="weatherResult" class="mt-5"></div>
     </div>
 
     <script src="https://d3js.org/d3.v6.min.js"></script>
