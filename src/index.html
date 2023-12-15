@@ -8,19 +8,27 @@
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-8 flex flex-col items-center justify-center min-h-screen">
+        
         <div class="py-8 px-8 bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
             <h1 class="text-3xl font-bold underline text-center">Weather Forecast</h1>
         
             <form id="weatherForm" class="flex flex-col items-center">
                 <label for="location" class="mb-2">Enter Location:</label>
-                <input type="text" id="location" placeholder="e.g., Bangkok" required class=" px-2 py-1 mb-2 rounded-full focus:ring-2 focus:ring-blue-500">
+                
+                <input type="text" id="location" placeholder="e.g., Bangkok" required class="px-2 py-1 mb-2 rounded-full" style="background-color: whitesmoke; color: black;">
+
                 <button type="submit" id="getWeatherbtn" class="bg-purple-500 text-white px-4 py-2 rounded-full">Get Weather</button>
             </form>
         </div>
-
-        <div id="chart-container" class="chart-container mt-8 py-8 px-8 bg-white hidden rounded-xl shadow-lg space-y-2 sm:py-4 sm:items-center sm:space-y-0 sm:space-x-6">
+        
+        <div class="py-4 flex justify-center space-x-4">
+            <button id="temperatureBtn" class="bg-purple-500 text-white px-4 py-2 rounded-full">Temperature</button>
+            <button id="humidityBtn" class="bg-purple-500 text-white px-4 py-2 rounded-full">Humidity</button>
+        </div>
+                <div id="chart-container" class="chart-container mt-8 py-8 px-8 bg-white hidden rounded-xl shadow-lg space-y-2 sm:py-4 sm:items-center sm:space-y-0 sm:space-x-6">
             <svg id="line-chart" width="300" height="150"></svg>
         </div>
+
         
         <div id="weatherInfo" class="text-center mt-4 mb-2 font-semibold"></div>
         <div id="weatherResult" class="mt-4"></div>
@@ -30,3 +38,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+

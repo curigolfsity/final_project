@@ -7,6 +7,7 @@
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
 */
 
+
 *,
 ::before,
 ::after {
@@ -402,6 +403,29 @@ Make sure disabled buttons don't get the pointer cursor.
 
 :disabled {
   cursor: default;
+}
+
+
+/* adjust the temporature and humidity  button */
+
+#temperatureBtn,
+#humidityBtn {
+  /* Existing styles */
+  margin-top: 20px; /* Add margin-top to push them down */
+  padding: 10px 20px; /* Set padding for consistent button size */
+  border: 1px solid #ccc; /* Add border for both buttons */
+  width: 150px; /* Set a specific width */
+}
+
+#temperatureBtn {
+  background-color: #CB4335 ; /* Fill Temperature button with light red */
+  padding: 10px 20px;
+  margin-right: 10px;
+}
+
+#humidityBtn {
+  background-color: #2471A3; /* Fill Humidity button with light blue */
+  margin-left: 10px;
 }
 
 /*
@@ -823,6 +847,7 @@ video {
 	animation: gradient 15s ease infinite;
 
 }
+
 
 @keyframes gradient {
 	0% {
